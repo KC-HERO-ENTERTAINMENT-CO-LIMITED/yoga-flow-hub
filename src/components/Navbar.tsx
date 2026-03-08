@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Leaf } from "lucide-react";
+import { Menu, X, Leaf, Sun, Moon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [
@@ -16,6 +16,9 @@ const navLinks = [
   },
   { label: "Poses Library", path: "/poses" },
   { label: "Solutions", path: "/solutions" },
+  { label: "Trainers", path: "/trainers" },
+  { label: "Sessions", path: "/sessions" },
+  { label: "Dashboard", path: "/dashboard" },
   { label: "Contact", path: "/contact" },
 ];
 
@@ -23,6 +26,17 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [dropdown, setDropdown] = useState<string | null>(null);
   const location = useLocation();
+  const [dark, setDark] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("theme") === "dark";
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", dark);
+    localStorage.setItem("theme", dark ? "dark" : "light");
+  }, [dark]);
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -35,7 +49,7 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-1">
+        <div className="hidden lg:flex items-center gap-0.5">
           {navLinks.map((link) =>
             link.children ? (
               <div
@@ -44,7 +58,7 @@ export default function Navbar() {
                 onMouseEnter={() => setDropdown(link.label)}
                 onMouseLeave={() => setDropdown(null)}
               >
-                <button className="px-3 py-2 rounded-md text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+                <button className="px-2.5 py-2 rounded-md text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
                   {link.label}
                 </button>
                 <AnimatePresence>
@@ -74,7 +88,7 @@ export default function Navbar() {
               <Link
                 key={link.path}
                 to={link.path!}
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                className={`px-2.5 py-2 rounded-md text-sm font-medium transition-colors ${
                   isActive(link.path!) ? "text-primary bg-primary/10" : "text-muted-foreground hover:text-foreground"
                 }`}
               >
@@ -82,12 +96,28 @@ export default function Navbar() {
               </Link>
             )
           )}
+          <button
+            onClick={() => setDark(!dark)}
+            className="ml-2 p-2 rounded-lg border border-border hover:bg-muted transition-colors"
+            aria-label="Toggle theme"
+          >
+            {dark ? <Sun className="h-4 w-4 text-sun" /> : <Moon className="h-4 w-4 text-muted-foreground" />}
+          </button>
         </div>
 
-        {/* Mobile toggle */}
-        <button className="md:hidden p-2" onClick={() => setOpen(!open)}>
-          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
+        {/* Mobile controls */}
+        <div className="flex lg:hidden items-center gap-2">
+          <button
+            onClick={() => setDark(!dark)}
+            className="p-2 rounded-lg border border-border hover:bg-muted transition-colors"
+            aria-label="Toggle theme"
+          >
+            {dark ? <Sun className="h-4 w-4 text-sun" /> : <Moon className="h-4 w-4 text-muted-foreground" />}
+          </button>
+          <button className="p-2" onClick={() => setOpen(!open)}>
+            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu */}
@@ -97,7 +127,7 @@ export default function Navbar() {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="md:hidden overflow-hidden glass-card border-t border-border/50"
+            className="lg:hidden overflow-hidden glass-card border-t border-border/50"
           >
             <div className="px-4 py-4 space-y-1">
               {navLinks.map((link) =>
