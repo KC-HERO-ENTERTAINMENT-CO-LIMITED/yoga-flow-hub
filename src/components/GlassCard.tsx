@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { forwardRef, ReactNode } from "react";
+import { ReactNode } from "react";
 
 interface GlassCardProps {
   children: ReactNode;
@@ -7,10 +7,9 @@ interface GlassCardProps {
   delay?: number;
 }
 
-const GlassCard = forwardRef<HTMLDivElement, GlassCardProps>(({ children, className = "", delay = 0 }, ref) => {
+export default function GlassCard({ children, className = "", delay = 0 }: GlassCardProps) {
   return (
     <motion.div
-      ref={ref}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -20,8 +19,4 @@ const GlassCard = forwardRef<HTMLDivElement, GlassCardProps>(({ children, classN
       {children}
     </motion.div>
   );
-});
-
-GlassCard.displayName = "GlassCard";
-
-export default GlassCard;
+}
