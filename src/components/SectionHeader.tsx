@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { forwardRef } from "react";
 
 interface SectionHeaderProps {
   badge?: string;
@@ -7,10 +6,9 @@ interface SectionHeaderProps {
   subtitle?: string;
 }
 
-const SectionHeader = forwardRef<HTMLDivElement, SectionHeaderProps>(({ badge, title, subtitle }, ref) => {
+export default function SectionHeader({ badge, title, subtitle }: SectionHeaderProps) {
   return (
     <motion.div
-      ref={ref}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -26,8 +24,4 @@ const SectionHeader = forwardRef<HTMLDivElement, SectionHeaderProps>(({ badge, t
       {subtitle && <p className="text-muted-foreground max-w-2xl mx-auto">{subtitle}</p>}
     </motion.div>
   );
-});
-
-SectionHeader.displayName = "SectionHeader";
-
-export default SectionHeader;
+}
