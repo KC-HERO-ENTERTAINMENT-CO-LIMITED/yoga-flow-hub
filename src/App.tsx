@@ -10,6 +10,10 @@ import YogaAdults from "./pages/YogaAdults";
 import YogaSeniors from "./pages/YogaSeniors";
 import PosesLibrary from "./pages/PosesLibrary";
 import SolutionHub from "./pages/SolutionHub";
+import SolutionDetail from "./pages/SolutionDetail";
+import Trainers from "./pages/Trainers";
+import OnlineSessions from "./pages/OnlineSessions";
+import Dashboard from "./pages/Dashboard";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 
@@ -29,6 +33,10 @@ const App = () => (
           <Route path="/yoga-seniors" element={<YogaSeniors />} />
           <Route path="/poses" element={<PosesLibrary />} />
           <Route path="/solutions" element={<SolutionHub />} />
+          <Route path="/solutions/:slug" element={<SolutionDetail />} />
+          <Route path="/trainers" element={<Trainers />} />
+          <Route path="/sessions" element={<OnlineSessions />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
